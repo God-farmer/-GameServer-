@@ -43,3 +43,31 @@ void ProcessFunc::upperOut(string & _data)
 	//通过标准输出通道输出
 	pOut->dataSendOut(_data);
 }
+
+//处理执行内部的处理
+AZinxMsg * ProcessFunc::internalHandle(AZinxMsg & _msg)
+{
+	UserData* pUserData = dynamic_cast<UserData*>(&_msg);
+
+	//如果第一个字母是小写->大写
+	if (pUserData->mBuf[0] >= 'a' && pUserData->mBuf[0] <= 'z')
+	{
+		upperOut(pUserData->mBuf);
+	}
+	else
+	{
+		orignOut(pUserData->mBuf);
+	}
+
+	//将用户数据转移到一块new出来的动态内存中
+	UserData *pMsg = new UserData;
+	pMsg->mBuf = pUserData->mBuf;
+
+	return pMsg;
+}
+
+//获取下一个处理
+AZinxHandler * ProcessFunc::getNextHandler(AZinxMsg & _msg)
+{
+	return nullptr;
+}
