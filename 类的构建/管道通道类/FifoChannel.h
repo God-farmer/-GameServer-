@@ -1,4 +1,5 @@
 ﻿//我就是来告一哈可以直接修改不
+//事实证明是可以的->通过github桌面版用vscode很方便修改
 #pragma once
 #include "IChannel.h"
 #include <sys/stat.h>
