@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿//我就是来告一哈可以直接修改不
+#pragma once
 #include "IChannel.h"
 #include <sys/stat.h>
 #include <fcntl.h>
