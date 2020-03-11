@@ -143,7 +143,7 @@ bool ZinxKernel::modChannelOut(IChannel * _channel)
 bool ZinxKernel::run(void)
 {
 	int ret = -1;
-	//i是啥？
+	//i是啥？-> 就是for循环定义的初始值
 	int i = 0;
 	//count拿来干嘛？
 	int count = 0;
@@ -162,8 +162,8 @@ bool ZinxKernel::run(void)
 		{
 			perror("epoll_wait");
 			return false;
-			//这个return不会结束进程
-			break;
+			//这个return会结束进程
+			//break;
 		}
 		else if (0 == ret)
 		{
@@ -189,6 +189,9 @@ bool ZinxKernel::run(void)
 					//否则即是写事件
 					IChannel*pChannel = static_cast<IChannel*>(re[i].data.ptr);
 					pChannel->fflushOut();
+
+					//修改监视的事件为读事件
+					ZinxKernel::getInstance()->modChannelIn(pChannel);
 				}
 			}
 		}

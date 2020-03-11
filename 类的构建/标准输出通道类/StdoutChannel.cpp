@@ -29,7 +29,7 @@ string StdoutChannel::readFd(string & _data)
 	return string();
 }
 
-//写数据
+//写数据	
 int StdoutChannel::writeFd(string & _data)
 {
 	cout << "2.StdoutChannel::writeFd " << _data << endl;

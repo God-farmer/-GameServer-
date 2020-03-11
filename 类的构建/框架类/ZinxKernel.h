@@ -22,7 +22,7 @@ public:
 	bool destroy(void);
 
 	//获取静态实例
-	//so，这个静态实例拿来干嘛使的？
+	//so，这个静态实例拿来干嘛使的？->使用类方法
 	static ZinxKernel*getInstance();
 
 	//添加通道到监视的集合中->上树

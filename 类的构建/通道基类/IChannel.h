@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <iostream>
 #include <string.h>
+#include "ProcessFunc.h"
 using namespace std;
 
 class IChannel
@@ -17,7 +18,7 @@ public:
 
 	//读数据
 	virtual string readFd(string &_data) = 0;
-	//为什么读数据也要传data？
+	//为什么读数据也要传data？->应该是一个传出参数
 
 	//写数据
 	virtual int writeFd(string &_data) = 0;
@@ -35,8 +36,10 @@ public:
 	void fflushOut(void);
 
 public:
-	//指向下一个通道
-	IChannel *pOut = nullptr;
+	//指向下一个通道->要实现哪个类的功能就指向哪个类
+	//IChannel *pOut = nullptr;
+	ProcessFunc *pOut = nullptr;
+
 private:
 	string mBuf;
 };
