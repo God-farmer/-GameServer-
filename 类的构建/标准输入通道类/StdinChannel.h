@@ -3,7 +3,8 @@
 #include <unistd.h>
 
 //标准输入通道类
-class StdinChannel:public IChannel
+class StdinChannel:
+	public IChannel
 {
 	StdinChannel();
 	virtual ~StdinChannel();
@@ -17,5 +18,8 @@ class StdinChannel:public IChannel
 	virtual int writeFd(string & _data) override;
 	
 	virtual int getFd() override;
+
+	// 通过 IChannel 继承
+	virtual AZinxHandler * getNextStep(AZinxMsg & _msg) override;
 };
 

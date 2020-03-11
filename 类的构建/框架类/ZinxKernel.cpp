@@ -139,6 +139,18 @@ bool ZinxKernel::modChannelOut(IChannel * _channel)
 	return true;
 }
 
+//将数据通过对应的通道发送
+bool ZinxKernel::dataSendOut(IChannel * _channel, string & _data)
+{
+	//数据
+	_channel->mBuf = _data;
+
+	//修改监视的事件为写事件
+	modChannelOut(_channel);
+
+	return false;
+}
+
 //运行
 bool ZinxKernel::run(void)
 {
@@ -180,9 +192,14 @@ bool ZinxKernel::run(void)
 				//如果这些上树的文件描述符是读事件
 				if (re[i].events & EPOLLIN)
 				{
-					string data;
+					/*string data;
 					IChannel* pChannel = static_cast<IChannel*>(re[i].data.ptr);
-					pChannel->readFd(data);
+					pChannel->readFd(data);*/
+
+					AZinxHandler *p = static_cast<AZinxHandler*>(re[i].data.ptr);
+					SysIoMsg *pSysMsg = new SysIoMsg;
+					pSysMsg->sysIo = SysIoMsg::IO_IN;
+					p->handle(*pSysMsg);
 				}
 				else
 				{

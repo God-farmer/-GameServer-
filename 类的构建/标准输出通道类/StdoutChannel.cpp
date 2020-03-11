@@ -41,3 +41,9 @@ int StdoutChannel::getFd()
 {
 	return STDOUT_FILENO;
 }
+
+//获取下一个处理
+AZinxHandler * StdoutChannel::getNextStep(AZinxMsg & _msg)
+{
+	return pNextHandler;
+}

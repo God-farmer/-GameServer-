@@ -38,6 +38,10 @@ public:
 	//修改监视写事件
 	bool modChannelOut(IChannel* _channel);
 
+	//重构框架加了↓这个方法
+	//改变消息IO方向，同时修改监听属性
+	bool dataSendOut(IChannel *_channel, string &_data);
+
 	//运行框架->框架是什么，整个模块的架子？所有功能都按这个架子的流程走？
 	bool run(void);
 

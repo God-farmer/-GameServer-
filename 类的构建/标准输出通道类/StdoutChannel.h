@@ -15,5 +15,8 @@ public:
 	virtual string readFd(string & _data) override;
 	virtual int writeFd(string & _data) override;
 	virtual int getFd() override;
+
+	// 通过 IChannel 继承
+	virtual AZinxHandler * getNextStep(AZinxMsg & _msg) override;
 };
 

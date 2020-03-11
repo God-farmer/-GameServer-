@@ -48,25 +48,25 @@ void ProcessFunc::orignOut(string & _data)
 //处理执行内部的处理
 AZinxMsg * ProcessFunc::internalHandle(AZinxMsg & _msg)
 {
-	UserData* pUserData = dynamic_cast<UserData*>(&_msg);
+	uSerMsg* pUserData = dynamic_cast<uSerMsg*>(&_msg);
 
 	//如果第一个字母是小写->大写
-	if (pUserData->mBuf[0] >= 'a' && pUserData->mBuf[0] <= 'z')
+	if (pUserData->mData[0] >= 'a' && pUserData->mData[0] <= 'z')
 	{
-		upperOut(pUserData->mBuf);
+		upperOut(pUserData->mData);
 	}
 	else
 	{
-		orignOut(pUserData->mBuf);
+		orignOut(pUserData->mData);
 	}
 
-	cout << "2.ProcessFunc::internalHandler" << pUserData->mBuf << endl;
+	cout << "2.ProcessFunc::internalHandler" << pUserData->mData << endl;
 
 	//将用户数据转移到一块new出来的动态内存中
-	UserData *pMsg = new UserData;
-	pMsg->mBuf = pUserData->mBuf;
+	uSerMsg *pMsg = new uSerMsg;
+	pMsg->mData = pUserData->mData;
 
-	pOut->dataSendOut(pMsg->mBuf);
+	pOut->dataSendOut(pMsg->mData);
 
 	return pMsg;
 }
@@ -82,14 +82,14 @@ AZinxHandler * ProcessFunc::getNextHandler(AZinxMsg & _msg)
 //获取字符串长度
 AZinxMsg * StrLength::internalHandle(AZinxMsg & _msg)
 {
-	UserData*pMsg = dynamic_cast<UserData*>(&_msg);
-	cout << "1.StrLength::internalHandler " << pMsg->mBuf.length() << endl;
+	uSerMsg*pMsg = dynamic_cast<uSerMsg*>(&_msg);
+	cout << "1.StrLength::internalHandler " << pMsg->mData.length() << endl;
 
 	//new一个pUserData动态保存pMsg的数据
-	UserData* pUserData = new UserData;
-	pUserData->mBuf = pMsg->mBuf;
+	uSerMsg* pUserData = new uSerMsg;
+	pUserData->mData = pMsg->mData;
 	//这里不能用mlen赋值->因为mLen之前没被赋值保存
-	pUserData->mLen = pMsg->mBuf.length();
+	pUserData->mLen = pMsg->mData.length();
 	
 	return pUserData;
 }
@@ -106,7 +106,7 @@ AZinxMsg* AsciiOut::internalHandle(AZinxMsg &_msg)
 	char buf[128];
 	memset(buf,0,sizeof(buf));
 
-	UserData *pMsg=dynamic_cast<UserData*>(&_msg);
+	uSerMsg *pMsg=dynamic_cast<uSerMsg*>(&_msg);
 	for(int i=0;i<pMsg->mLen;++i)
 	{
 		// ABCDEFG
@@ -118,16 +118,16 @@ AZinxMsg* AsciiOut::internalHandle(AZinxMsg &_msg)
 		// buf[5]=[3];
 
 		//将ASCII输出到buf中
-		sprintf(&buf[i*2],"%02X",pMsg->mBuf[i]);
+		sprintf(&buf[i*2],"%02X",pMsg->mData[i]);
 	}
 
 	cout << "3. AsciiOut::internalHandle " << buf << endl;
 
 	pOut->dataSendOut(buf);
 
-	UserData *pUserData = new UserData;
-	pUserData->mBuf=buf;
-	pUserData->mLen=pUserData->mBuf.length();
+	uSerMsg *pUserData = new uSerMsg;
+	pUserData->mData =buf;
+	pUserData->mLen=pUserData->mData.length();
 
 	return pUserData; 
 }

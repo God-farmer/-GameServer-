@@ -9,13 +9,13 @@
 //应该 ↓ ->声明这个类即可
 class IChannel;
 
-//用户数据类
-class UserData:public AZinxMsg
-{
-public:
-	string mBuf;
-	int mLen;
-};
+////用户数据类
+//class UserData:public AZinxMsg
+//{
+//public:
+//	string mBuf;
+//	int mLen;
+//};
 
 //计算字符串长度类
 class StrLength:public AZinxHandler 

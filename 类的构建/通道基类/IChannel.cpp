@@ -14,6 +14,8 @@ IChannel::~IChannel()
 //数据处理
 void IChannel::dataProcess(string _data)
 {
+	//所以不需要处理数据了
+#if 0
 	//检查输入
 	if (nullptr == pOut)
 	{
@@ -24,7 +26,7 @@ void IChannel::dataProcess(string _data)
 	//pOut->dataSendOut(_data);
 	//这里实现的是功能类ProcessFunc的功能，所以调用它的方法
 	pOut->dataProc(_data);
-
+#endif
 }
 
 //发送数据
@@ -47,4 +49,32 @@ void IChannel::fflushOut(void)
 	writeFd(mBuf);
 	//清空缓冲区
 	mBuf.clear();
+}
+
+AZinxMsg * IChannel::internalHandle(AZinxMsg & _msg)
+{
+	string buf;
+	SysIoMsg *pMsg = dynamic_cast<SysIoMsg*>(&_msg);
+	uSerMsg*pUserMsg = nullptr;
+
+	//判断消息的方向
+	if (pMsg->sysIo == SysIoMsg::IO_IN)
+	{
+		pUserMsg = new uSerMsg;
+		pUserMsg->sysIo = pMsg->sysIo;
+		pUserMsg->mData = readFd(buf);
+		pUserMsg->mLen = buf.length();
+	}
+	else
+	{
+		writeFd(mBuf);
+	}
+
+	return pUserMsg;
+}
+
+//获取下一个处理
+AZinxHandler * IChannel::getNextHandler(AZinxMsg & _msg)
+{
+	return getNextHandler(_msg);
 }
