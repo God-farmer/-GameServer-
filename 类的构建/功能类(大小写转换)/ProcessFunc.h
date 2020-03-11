@@ -26,6 +26,18 @@ public:
 	virtual AZinxHandler * getNextHandler(AZinxMsg & _msg) override;
 };
 
+//Ascii码输出
+class AsciiOut:public AZinxHandler
+{
+public:
+	virtual AZinxMsg* internalHandle(AZinxMsg &_msg) override;
+	virtual AZinxHandler* getNextHandler(AZinxMsg &_msg) override;
+	
+public:
+	IChannel *pOut=nullptr;
+};
+
+
 //功能处理类->那么，要实现哪些功能就在这个类里
 class ProcessFunc:public AZinxHandler
 {

@@ -99,3 +99,43 @@ AZinxHandler * StrLength::getNextHandler(AZinxMsg & _msg)
 {
 	return pNextHandler;
 }
+
+//-------------Ascii-------------
+AZinxMsg* AsciiOut::internalHandle(AZinxMsg &_msg)
+{
+	char buf[128];
+	memset(buf,0,sizeof(buf));
+
+	UserData *pMsg=dynamic_cast<UserData*>(&_msg);
+	for(int i=0;i<pMsg->mLen;++i)
+	{
+		// ABCDEFG
+		// buf[0]='4';
+		// buf[1]='1';
+		// buf[2]='4';
+		// buf[3]='2';
+		// buf[4]='4';
+		// buf[5]=[3];
+
+		//将ASCII输出到buf中
+		sprintf(&buf[i*2],"%02X",pMsg->mBuf[i]);
+	}
+
+	cout << "3. AsciiOut::internalHandle " << buf << endl;
+
+	pOut->dataSendOut(buf);
+
+	UserData *pUserData = new UserData;
+	pUserData->mBuf=buf;
+	pUserData->mLen=pUserData->mBuf.length();
+
+	return pUserData; 
+}
+
+//获取下一个处理
+AZinxHandler *AsciiOut::getNextHandler(AZinxMsg &_msg)
+{
+	pNextHandler=nullptr;
+
+	return pNextHandler;
+}
