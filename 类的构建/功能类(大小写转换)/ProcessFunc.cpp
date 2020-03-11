@@ -28,20 +28,21 @@ void ProcessFunc::dataProc(string & _data)
 
 //两个方法的具体实现
 //小写->大写
-void ProcessFunc::orignOut(string & _data)
+void ProcessFunc::upperOut(string & _data)
 {
 	//调用STL中的算法->导入头文件algorithm
 	transform(_data.begin(), _data.end(), _data.begin(), ::toupper);
 
 	//通过标准输出通道输出
-	pOut->dataSendOut(_data);
+	
+	//pOut->dataSendOut(_data);
 }
 
 //原样输出
-void ProcessFunc::upperOut(string & _data)
+void ProcessFunc::orignOut(string & _data)
 {
 	//通过标准输出通道输出
-	pOut->dataSendOut(_data);
+	//pOut->dataSendOut(_data);
 }
 
 //处理执行内部的处理
@@ -59,9 +60,13 @@ AZinxMsg * ProcessFunc::internalHandle(AZinxMsg & _msg)
 		orignOut(pUserData->mBuf);
 	}
 
+	cout << "2.ProcessFunc::internalHandler" << pUserData->mBuf << endl;
+
 	//将用户数据转移到一块new出来的动态内存中
 	UserData *pMsg = new UserData;
 	pMsg->mBuf = pUserData->mBuf;
+
+	pOut->dataSendOut(pMsg->mBuf);
 
 	return pMsg;
 }
@@ -69,5 +74,28 @@ AZinxMsg * ProcessFunc::internalHandle(AZinxMsg & _msg)
 //获取下一个处理
 AZinxHandler * ProcessFunc::getNextHandler(AZinxMsg & _msg)
 {
-	return nullptr;
+	return pNextHandler;
+}
+
+//-------Strlength---------
+//内部处理
+//获取字符串长度
+AZinxMsg * StrLength::internalHandle(AZinxMsg & _msg)
+{
+	UserData*pMsg = dynamic_cast<UserData*>(&_msg);
+	cout << "1.StrLength::internalHandler " << pMsg->mBuf.length() << endl;
+
+	//new一个pUserData动态保存pMsg的数据
+	UserData* pUserData = new UserData;
+	pUserData->mBuf = pMsg->mBuf;
+	//这里不能用mlen赋值->因为mLen之前没被赋值保存
+	pUserData->mLen = pMsg->mBuf.length();
+	
+	return pUserData;
+}
+
+//获取下一个处理
+AZinxHandler * StrLength::getNextHandler(AZinxMsg & _msg)
+{
+	return pNextHandler;
 }

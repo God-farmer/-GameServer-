@@ -17,6 +17,15 @@ public:
 	int mLen;
 };
 
+//计算字符串长度类
+class StrLength:public AZinxHandler 
+{
+public:
+	// 通过 AZinxHandler 继承
+	virtual AZinxMsg * internalHandle(AZinxMsg & _msg) override;
+	virtual AZinxHandler * getNextHandler(AZinxMsg & _msg) override;
+};
+
 //功能处理类->那么，要实现哪些功能就在这个类里
 class ProcessFunc:public AZinxHandler
 {
